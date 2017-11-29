@@ -43,29 +43,27 @@ class Network(nn.Module):
       self.unembed = nn.Linear(unembedDim, ansDim)
 
    def forward(self, x, trainable):
-      x, s, out = self.embed(x), None, []
-      x = F.dropout(x, p=self.drop, training=trainable)
-
+      x, s, out = self.embed(x), 0, []
       for i in range(self.context):
-         o, s = self.cell(x[:, i], s, trainable)
+         o, s, sMetrics = self.cell(x[:, i], s, trainable)
          out += [o]
 
       batchSz = x.size(0)
-      x = self.unembed(t.cat(out, 0)).view(batchSz, self.context, -1)
-      return x
-
+      x = t.stack(out, 1).view(batchSz*self.context, -1)
+      return self.unembed(x).view(batchSz, self.context, -1)
 
 def train(net, opt, trainBatcher, validBatcher, saver, minContext):
    while True:
       start = time.time()
 
+      #Run epochs
       trainLoss, trainAcc = utils.runData(net, opt, trainBatcher,
             trainable=True, verbose=True)
       validLoss, validAcc = utils.runData(net, opt, validBatcher,
             minContext=minContext)
-
       trainLoss, validLoss = np.exp(trainLoss), np.exp(validLoss)
 
+      #Print statistics
       print('\nEpoch: ', saver.epoch(), ', Time: ', time.time()-start)
       print('| Train Perp: ', trainLoss,
             ', Train Acc: ', trainAcc)

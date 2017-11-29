@@ -4,19 +4,19 @@ from models.BaselineLSTM import LSTMCell
 from models.RHN import RHNCell
 from models.HyperRHN import HyperRHNCell
 
-saveName = 'saves/hrhn/'
+saveName = 'saves/rhn/'
 load = False
-cellFunc = HyperRHNCell
+cellFunc = RHNCell
 depth = 7
 h = 1000
 hCell = h
-hCell = (128, h)
+#hCell = (128, h)
 vocab = 50
 embedDim = 27
 batchSz = 200
 context = 100
 minContext = 50
-eta = 1e-3
+eta = 5e-4
 gateDrop = 1.0 - 0.65
 embedDrop = 0.0
 
