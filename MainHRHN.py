@@ -4,8 +4,9 @@ from models.BaselineLSTM import LSTMCell
 from models.RHN import RHNCell
 from models.HyperRHN import HyperRHNCell
 
-saveName = 'saves/hrhn/'
-load = False
+saveName = 'saves/testme/'
+load = True 
+test = True
 cellFunc = HyperRHNCell
 depth = 7
 h = 1000
@@ -22,4 +23,4 @@ embedDrop = 0.0
 
 cell = cellFunc(embedDim, hCell, depth, gateDrop)
 run(cell, depth, h, vocab, batchSz, embedDim, embedDrop,
-      context, minContext, eta, saveName, load)
+      context, minContext, eta, saveName, load, test)

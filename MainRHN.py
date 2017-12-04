@@ -5,7 +5,8 @@ from models.RHN import RHNCell
 from models.HyperRHN import HyperRHNCell
 
 saveName = 'saves/rhn/'
-load = False
+load = True 
+test = True
 cellFunc = RHNCell
 depth = 7
 h = 1000
@@ -22,4 +23,4 @@ embedDrop = 0.0
 
 cell = cellFunc(embedDim, hCell, depth, gateDrop)
 run(cell, depth, h, vocab, batchSz, embedDim, embedDrop,
-      context, minContext, eta, saveName, load)
+      context, minContext, eta, saveName, load, test)

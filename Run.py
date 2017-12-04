@@ -76,6 +76,17 @@ def train(net, opt, trainBatcher, validBatcher, saver, minContext):
       else:
          saver.update(net, trainLoss, trainAcc, validLoss, validAcc)
 
+def test(net, batcher, minContext, name='Test'):
+   start = time.time()
+
+   loss, acc = utils.runData(net, None, batcher,
+         minContext=minContext)
+   loss = np.exp(loss)
+
+   #Print statistics
+   print('Time: ', time.time()-start)
+   print(name, ' Perp: ', loss, ', Acc: ', acc)
+
 def modelDef(net, cuda=True):
    if cuda: net.cuda()
    utils.initWeights(net)
@@ -83,7 +94,7 @@ def modelDef(net, cuda=True):
    return net
 
 def run(cell, depth, h, vocabDim, batchSz, embedDim, embedDrop, 
-      context, minContext, eta, saveName, load):
+      context, minContext, eta, saveName, load, isTest):
    trainBatcher, validBatcher, testBatcher = dataBatcher(
          batchSz, context, minContext)
 
@@ -94,5 +105,11 @@ def run(cell, depth, h, vocabDim, batchSz, embedDim, embedDrop,
    saver = utils.SaveManager(saveName)
    if load: saver.load(net)
 
-   train(net, opt, trainBatcher, validBatcher, saver, minContext)
+   if not isTest:
+      train(net, opt, trainBatcher, validBatcher, saver, minContext)
+   else:
+      #Up the test context
+      minContext = 95
+      test(net, validBatcher, minContext, name='Valid')
+      test(net, testBatcher, minContext, name='Test')
 
