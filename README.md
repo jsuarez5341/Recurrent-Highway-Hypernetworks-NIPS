@@ -1,5 +1,7 @@
 ![Alt text](poster.png?raw=true "Title")
 
+Paper link: http://papers.nips.cc/paper/6919-language-modeling-with-recurrent-highway-hypernetworks.pdf
+
 NOTE: Use pytorch for 1.12_2 for now. Has not been confirmed working with 2.0. If you're just interested in the clean RHN cell implementation, that should work, potentially with small API updates. I do plan on updating, but not until after the conference.
 
 12/3/17: Final correctness checks. Had to drop the batch size to 200 due to memory constraints. Our model obtains 1.195 BPC after 650 epochs. The RHN takes 1020 epochs to converge and likely still has not converged--that said, the perplexity is constant to the third digit since epoch 650, so this is not a concern. Run the respective MainHRHN and MainRHN files to reproduce. Also updated poster (old version still in the repo) and fixed the inconsistent date labeling below.
